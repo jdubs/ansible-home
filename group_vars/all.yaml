@@ -8,6 +8,7 @@ packages:
 - lm-sensors
 - nvme-cli
 - apt-transport-https
+- freeipmi-tools
 
 ansible_distribution_version2: "{{ ansible_distribution_version.replace('.','') }}"
 

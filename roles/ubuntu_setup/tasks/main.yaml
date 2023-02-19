@@ -26,3 +26,7 @@
   service:
     name: systemd-networkd-wait-online
     masked: yes
+
+- name: detect sensors
+  ansible.builtin.command: sensors-detect --auto
+  changed_when: true
