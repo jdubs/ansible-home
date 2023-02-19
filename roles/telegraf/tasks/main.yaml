@@ -1,0 +1,41 @@
+- name: "Debian | Download Telegraf apt key"
+  apt_key:
+    url: "https://repos.influxdata.com/influxdata-archive.key"
+    id: 7df8b07e
+    state: present
+
+- name: "Debian | Add Telegraf repository (using LSB)"
+  apt_repository:
+    repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} stable"
+    filename: "telegraf"
+    state: present
+
+- name: "Debian | Add Telegraf repository"
+  apt_repository:
+    repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    filename: "telegraf"
+    state: present
+
+- name: Install telgraf
+  apt:
+    name: telegraf
+
+- name: Configure telegraf.conf
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart telegraf
+
+- name: Configure probes
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/telegraf/telegraf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - stats.conf
+  notify: restart telegraf

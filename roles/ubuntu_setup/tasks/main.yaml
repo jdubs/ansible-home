@@ -1,0 +1,23 @@
+- name: sudo without password for sudo group
+  ansible.builtin.copy:
+    content: '%sudo ALL=(ALL:ALL) NOPASSWD:ALL'
+    dest: /etc/sudoers.d/nopasswd
+    mode: 0440
+
+- name: Update and upgrade apt packages
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: true
+    autoremove: true
+    autoclean: true
+
+- name: Install common packages
+  ansible.builtin.package:
+    name: "{{ packages }}"
+    state: present
+
+- name: "Set timezone to {{ timezone }}"
+  become: true
+  community.general.timezone:
+    name: "{{ timezone }}"

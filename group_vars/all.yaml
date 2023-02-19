@@ -1,0 +1,26 @@
+timezone: Etc/UTC
+packages:
+- python3-pip
+- net-tools
+- python3-setuptools
+- netplan.io
+- ipmitool
+- lm-sensors
+- nvme-cli
+- apt-transport-https
+
+ansible_distribution_version2: "{{ ansible_distribution_version.replace('.','') }}"
+
+nvidia:
+  gpg_key_url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+  apt_repo: "deb https://developer.download.nvidia.com/compute/cuda/repos/{{ ansible_distribution|lower }}{{ ansible_distribution_version2 }}/{{ ansible_architecture }} ./"
+  driver: nvidia-headless-525
+
+ofed_version: 5.9-0.5.6.0
+mellanox:
+  gpg_key_url: https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+  apt_repo: "deb http://linux.mellanox.com/public/repo/mlnx_ofed/{{ ofed_version }}/{{ ansible_distribution|lower }}{{ ansible_distribution_version }}/{{ ansible_architecture }} ./"
+  driver: mlnx-ofed-all
+
+telegraf:
+  influxdb: http://192.168.1.5:8086

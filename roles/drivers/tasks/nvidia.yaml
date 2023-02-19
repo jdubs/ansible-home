@@ -1,0 +1,16 @@
+---
+- name: Install nvidia gpg key
+  apt_key:
+    url: "{{ nvidia.gpg_key_url }}"
+    state: present
+
+- name: Install nvidia apt repo
+  apt_repository:
+    repo: "{{ nvidia.apt_repo }}"
+    state: present
+    filename: 'cuda'
+
+- name: install nvidia driver
+  apt:
+    name: "{{ nvidia.driver }}"
+    state: present

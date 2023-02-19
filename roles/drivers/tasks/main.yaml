@@ -1,0 +1,6 @@
+---
+- name: Include nvidia drivers
+  ansible.builtin.include: nvidia.yaml
+
+- name: Include mellanox drivers
+  ansible.builtin.include: mellanox.yaml

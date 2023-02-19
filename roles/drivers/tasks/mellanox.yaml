@@ -1,0 +1,16 @@
+---
+- name: Install mellanox gpg key
+  apt_key:
+    url: "{{ mellanox.gpg_key_url }}"
+    state: present
+
+- name: Install mellanox apt repo
+  apt_repository:
+    repo: "{{ mellanox.apt_repo }}"
+    state: present
+    filename: 'mellanox'
+
+- name: install ofed
+  apt:
+    name: "{{ mellanox.driver }}"
+    state: present

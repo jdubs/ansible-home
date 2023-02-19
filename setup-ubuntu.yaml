@@ -1,0 +1,8 @@
+- name: Playbook to manage all infra
+  hosts: worker
+  user: jw
+  become: true
+  roles:
+    - ubuntu_setup
+    - telegraf
+    - drivers
