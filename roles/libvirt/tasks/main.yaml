@@ -1,0 +1,30 @@
+- name: Install libvirt
+  apt:
+    name: 
+    - libvirt-daemon
+    - libvirt-clients
+    - qemu-kvm
+    - virtinst
+    - bridge-utils
+    state: present
+
+- name: Enable IOMMU
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=""'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ grub_cmd }}"'
+  register: need_reboot
+
+- name: update-grub
+  command: update-grub2
+
+- name: Enable and start libvirt service
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+
+- name: Reboot the machine (Wait for 5 min)
+  reboot:
+    reboot_timeout: 300
+  when: need_reboot.changed

@@ -24,3 +24,5 @@ mellanox:
 
 telegraf:
   influxdb: http://192.168.1.5:8086
+
+grub_cmd: "nvidia-drm.modeset=1 kvm_amd.sev=1 iommu=pt"

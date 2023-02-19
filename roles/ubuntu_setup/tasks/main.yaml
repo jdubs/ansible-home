@@ -21,3 +21,8 @@
   become: true
   community.general.timezone:
     name: "{{ timezone }}"
+
+- name: mask systemd-networkd-wait-online
+  service:
+    name: systemd-networkd-wait-online
+    masked: yes
