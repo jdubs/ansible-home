@@ -30,3 +30,6 @@
 - name: detect sensors
   ansible.builtin.command: sensors-detect --auto
   changed_when: true
+
+- name: Config sar
+  ansible.builtin.include: sar.yaml

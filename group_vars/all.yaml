@@ -9,6 +9,8 @@ packages:
 - nvme-cli
 - apt-transport-https
 - freeipmi-tools
+- iperf3
+- sysstat
 
 ansible_distribution_version2: "{{ ansible_distribution_version.replace('.','') }}"
 

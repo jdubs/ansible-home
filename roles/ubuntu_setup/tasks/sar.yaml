@@ -1,0 +1,11 @@
+- lineinfile:
+    path: /etc/default/sysstat
+    state: present
+    backrefs: yes
+    regexp: '^ENABLED="false"'
+    line: 'ENABLED="true"'
+
+- service:
+    name: sysstat
+    state: started
+    enabled: yes
