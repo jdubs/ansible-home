@@ -1,11 +1,14 @@
 - name: Install libvirt
   apt:
-    name: 
-    - libvirt-daemon
-    - libvirt-clients
+    name:
+    - qemu
     - qemu-kvm
-    - virtinst
+    - libvirt-daemon-system
+    - libvirt-clients
+    - ebtables
+    - dnsmasq-base
     - bridge-utils
+    - virtinst
     state: present
 
 - name: Enable IOMMU
@@ -23,6 +26,14 @@
     name: libvirtd
     state: started
     enabled: yes
+
+- name: Add the user jw to libvirt group
+  ansible.builtin.user:
+    name: jw
+    groups:
+     - jw
+     - libvirt
+     - sudo
 
 - name: Reboot the machine (Wait for 5 min)
   reboot:
