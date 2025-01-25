@@ -4,5 +4,6 @@
   become: true
   roles:
     - ubuntu_setup
+    - hashicorp
     - telegraf
     - drivers

@@ -13,6 +13,7 @@ packages:
 - sysstat
 - vim
 - ubuntu-server #Core -> regular-server
+- nfs-common
 
 ansible_distribution_version2: "{{ ansible_distribution_version.replace('.','') }}"
 
@@ -20,8 +21,8 @@ nvidia:
   gpg_key_url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
   apt_repo: "deb https://developer.download.nvidia.com/compute/cuda/repos/{{ ansible_distribution|lower }}{{ ansible_distribution_version2 }}/{{ ansible_architecture }} ./"
   drivers:
-  - nvidia-headless-525
-  - nvidia-utils-525
+  - nvidia-headless-550
+  - nvidia-utils-550
 
 ofed_version: 5.9-0.5.6.0
 mellanox:

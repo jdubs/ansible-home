@@ -15,8 +15,8 @@
     name: "{{ nvidia.drivers }}"
     state: present
 
-- name: mask nvidia-powerd
-  ansible.builtin.systemd:
-    name: nvidia-powerd
-    enabled: false
-    masked: true
+#- name: mask nvidia-powerd
+#  ansible.builtin.systemd:
+#    name: nvidia-powerd
+#    enabled: false
+#    masked: true
