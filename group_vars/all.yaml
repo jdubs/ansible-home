@@ -24,7 +24,7 @@ nvidia:
   - nvidia-headless-550
   - nvidia-utils-550
 
-ofed_version: 5.9-0.5.6.0
+ofed_version: 24.10-1.1.4.0
 mellanox:
   gpg_key_url: https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
   apt_repo: "deb http://linux.mellanox.com/public/repo/mlnx_ofed/{{ ofed_version }}/{{ ansible_distribution|lower }}{{ ansible_distribution_version }}/{{ ansible_architecture }} ./"
@@ -33,4 +33,4 @@ mellanox:
 telegraf:
   influxdb: http://192.168.1.5:8086
 
-grub_cmd: "nvidia-drm.modeset=1 kvm_amd.sev=1 iommu=pt"
+grub_cmd: "nvidia-drm.modeset=1 kvm_amd.sev=1 iommu=pt pci=realloc=off"
