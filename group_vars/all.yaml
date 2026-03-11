@@ -12,17 +12,18 @@ packages:
 - iperf3
 - sysstat
 - vim
-- ubuntu-server #Core -> regular-server
 - nfs-common
+- nfs-kernel-server
 
 ansible_distribution_version2: "{{ ansible_distribution_version.replace('.','') }}"
 
 nvidia:
   gpg_key_url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
-  apt_repo: "deb https://developer.download.nvidia.com/compute/cuda/repos/{{ ansible_distribution|lower }}{{ ansible_distribution_version2 }}/{{ ansible_architecture }} ./"
+  apt_repo: "deb https://developer.download.nvidia.com/compute/cuda/repos/{{ ansible_distribution|lower }}2404/{{ ansible_architecture }} ./"
   drivers:
-  - nvidia-headless-550
-  - nvidia-utils-550
+#  - nvidia-headless-570
+#  - nvidia-utils-570
+  - cuda-drivers
 
 ofed_version: 24.10-1.1.4.0
 mellanox:

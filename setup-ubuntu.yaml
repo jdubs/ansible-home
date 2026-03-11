@@ -1,9 +1,9 @@
 - name: Playbook to manage all infra
   hosts: worker
-  user: jw
+  user: jtrenholm
   become: true
   roles:
     - ubuntu_setup
-    - hashicorp
-    - telegraf
-    - drivers
+    #- hashicorp
+    #- telegraf
+    #- drivers

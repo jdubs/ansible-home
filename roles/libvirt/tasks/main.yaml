@@ -1,7 +1,7 @@
 - name: Install libvirt
   apt:
     name:
-    - qemu
+    - qemu-system
     - qemu-kvm
     - libvirt-daemon-system
     - libvirt-clients

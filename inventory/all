@@ -1,5 +1,6 @@
 [all]
 
 [worker]
-amd7402.home.xomar.com
+#amd7402.home.xomar.com
 #192.168.1.104
+192.168.1.99 ansible_user=jtrenholm ansible_become=true ansible_become_method=sudo ansible_become_exe='sudo -n'
