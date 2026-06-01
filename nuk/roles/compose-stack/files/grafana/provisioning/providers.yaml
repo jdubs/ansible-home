@@ -1,15 +1,18 @@
 # Nuk System - Grafana dashboard providers config
+# Official Grafana unified storage format
+
 apiVersion: 1
 
-kind: dashboard
+kind: providers
 
-providers:
-  - name: 'default'
-    orgId: 1
-    folder: ''
-    type: file
-    disableDeletion: false
-    editable: true
-    options:
-      path: /var/lib/grafana/dashboards
-      foldersFromFilesStructure: false
+data:
+  providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards
+        foldersFromFilesStructure: false
