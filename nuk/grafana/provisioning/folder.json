@@ -1,6 +1,10 @@
 {
   "apiVersion": 1,
   "kind": "folder",
+  "name": "nuk-folders-config",
+  "metadata": {
+    "name": "grafana-folders"
+  },
   "data": {
     "folders": [
       {

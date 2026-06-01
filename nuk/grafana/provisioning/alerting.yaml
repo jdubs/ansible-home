@@ -1,4 +1,14 @@
-# Nuk System - Grafana alert rules provisioning
 apiVersion: 1
 kind: alerting
-data: {}
+name: nuk-alerting-config
+metadata:
+  name: grafana-alerts
+data:
+  # This is where your actual Grafana alert groups will live.
+  # If you want it completely empty for now, just leave: groups: []
+  groups:
+    - orgId: 1
+      name: 'Nuk System Alerts'
+      folder: 'Nuk System'
+      interval: 1m
+      rules: []
