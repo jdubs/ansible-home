@@ -1,31 +1,25 @@
 # Nuk System - Grafana datasources provisioning
+# Git Sync format
+
+---
 apiVersion: 1
-
 kind: datasources
-
-dataSources:
-  - metadata:
-      name: prometheus
-    data:
-      datasource:
-        name: Prometheus
-        type: prometheus
-        access: proxy
-        url: http://prometheus:9090
-        isDefault: true
-        editable: true
-        jsonData:
-          timeInterval: 15s
-          httpMethod: POST
-  - metadata:
-      name: loki
-    data:
-      datasource:
-        name: Loki
-        type: loki
-        access: proxy
-        url: http://loki:3100
-        isDefault: false
-        editable: true
-        jsonData:
-          maxLines: 1000
+data:
+  datasources:
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://prometheus:9090
+      isDefault: true
+      editable: true
+      jsonData:
+        timeInterval: 15s
+        httpMethod: POST
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://loki:3100
+      isDefault: false
+      editable: true
+      jsonData:
+        maxLines: 1000

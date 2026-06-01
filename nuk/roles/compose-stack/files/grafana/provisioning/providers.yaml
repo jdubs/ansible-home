@@ -1,10 +1,7 @@
 # Nuk System - Grafana dashboard providers config
-# Official Grafana unified storage format
-
 apiVersion: 1
 
 kind: providers
-
 data:
   providers:
     - name: 'default'

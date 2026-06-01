@@ -1,17 +1,11 @@
 # Nuk System - Grafana folder provisioning
-# Official Grafana unified storage format
-
 apiVersion: 1
 
 kind: folders
-
 data:
   folders:
-    - metadata:
-        name: Nuk System
-      data:
-        title: Nuk System
-        uid: nuk-system
-        orgId: 1
-        parentUid: ''
-        readOnly: false
+    - title: Nuk System
+      uid: nuk-system
+      orgId: 1
+      parentUid: ''
+      readOnly: false

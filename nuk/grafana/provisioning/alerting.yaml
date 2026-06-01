@@ -1,8 +1,5 @@
 # Nuk System - Grafana alert rules provisioning
-# Official Grafana unified storage format
-
 apiVersion: 1
 
 kind: alerting
-
 data: {}
