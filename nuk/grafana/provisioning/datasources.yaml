@@ -1,7 +1,4 @@
 # Nuk System - Grafana datasources provisioning
-# Git Sync format
-
----
 apiVersion: 1
 kind: datasources
 data:
