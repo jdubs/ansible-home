@@ -1,0 +1,25 @@
+network:
+    version: 2
+    ethernets:
+        eno1:
+            addresses:
+            - 192.168.1.209/24
+            routes:
+            - to: 0.0.0.0/0
+              via: 192.168.1.1
+            dhcp4: false
+            nameservers:
+              addresses:
+              - 192.168.1.5
+              - 1.1.1.1
+              - 8.8.8.8
+    vlans:
+      vlan.15:
+        id: 15
+        link: eno1
+        addresses:
+        - 192.168.15.209/24
+        routes:
+        - to: 0.0.0.0/0
+          via: 192.168.15.1
+          metric: 100

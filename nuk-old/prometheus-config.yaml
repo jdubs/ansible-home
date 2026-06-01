@@ -1,0 +1,84 @@
+global:
+  scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['grafana:3000']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'tempo'
+    static_configs:
+      - targets: ['tempo:3200']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          hostname: 'nuk'
+
+  - job_name: 'j100-node-exporter'
+    static_configs:
+      - targets: ['192.168.1.5:9100']
+        labels:
+          hostname: 'j100'
+
+  - job_name: 'j100-prometheus'
+    static_configs:
+      - targets: ['192.168.1.5:9090']
+        labels:
+          hostname: 'j100'
+
+  - job_name: 'j100-grafana'
+    static_configs:
+      - targets: ['192.168.1.5:3000']
+        labels:
+          hostname: 'j100'
+
+  - job_name: 'blackbox-spectrum'
+    metrics_path: /probe
+    params:
+      module: [icmp_spectrum]
+      target: [8.8.8.8]
+    static_configs:
+      - targets: ['192.168.1.209:9115']
+        labels:
+          hostname: 'nuk'
+          connection: 'spectrum'
+
+  - job_name: 'blackbox-att'
+    metrics_path: /probe
+    params:
+      module: [icmp_att]
+      target: [8.8.8.8]
+    static_configs:
+      - targets: ['192.168.1.209:9115']
+        labels:
+          hostname: 'nuk'
+          connection: 'att'

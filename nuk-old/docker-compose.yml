@@ -1,0 +1,147 @@
+services:
+  loki:
+    image: grafana/loki:3.3.2
+    container_name: loki
+    user: "10001:0"
+    ports:
+      - "3100:3100"
+    volumes:
+      - /data0/grafana-inc/loki-config:/etc/loki
+      - /data0/grafana-inc/loki-data:/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus
+    user: "65534:0"
+    ports:
+      - "9090:9090"
+    volumes:
+      - /data0/grafana-inc/prometheus-config:/etc/prometheus
+      - /data0/grafana-inc/prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-config.yaml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-remote-write-receiver"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - /data0/grafana-inc/alertmanager-config:/etc/alertmanager
+      - /data0/grafana-inc/alertmanager-data:/alertmanager
+    user: "65534:0"
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--storage.path=/alertmanager"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  tempo:
+    image: grafana/tempo:2.6.0
+    container_name: tempo
+    user: "10001:0"
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+    volumes:
+      - /data0/grafana-inc/tempo-config:/etc/tempo
+      - /data0/grafana-inc/tempo-data:/tmp/tempo
+    command: -config.file=/etc/tempo/tempo-config.yaml
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:13.1.0-25893932881-ubuntu
+    container_name: grafana
+    user: "472:0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - /data0/grafana-inc/grafana-data:/var/lib/grafana
+      - /data0/grafana-inc/grafana-traditional-provisioning:/etc/grafana/provisioning
+      - /data0/grafana-inc/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-lokiexplore-app,grafana-piechart-panel,natel-discrete-panel
+    restart: unless-stopped
+    depends_on:
+      - loki
+      - prometheus
+      - tempo
+      - alertmanager
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/rootfs"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:3.3.2
+    container_name: promtail
+    volumes:
+      - /data0/grafana-inc/promtail-config:/etc/promtail
+      - /var/log:/var/log
+      - /data0/grafana-inc/loki-data/agent-db:/tmp/agent-db
+      - /data0/syslog:/data0/syslog:ro
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.50.0
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.25.0
+    container_name: blackbox-exporter
+    network_mode: host
+    volumes:
+      - /data0/grafana-inc/blackbox-config:/etc/blackbox
+    command: --config.file=/etc/blackbox/blackbox-config.yaml
+    cap_add:
+      - NET_RAW
+    restart: unless-stopped
+
+networks:
+  monitoring:
+    driver: bridge

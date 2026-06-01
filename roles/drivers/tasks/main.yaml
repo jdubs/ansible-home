@@ -1,6 +1,0 @@
----
-- name: Include nvidia drivers
-  include_tasks: nvidia.yaml
-
-#- name: Include mellanox drivers
-#  include_tasks: mellanox.yaml

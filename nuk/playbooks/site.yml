@@ -1,0 +1,49 @@
+---
+# Main playbook - Deploy entire Grafana stack on NUK system
+
+- name: Deploy NUK System Services
+  hosts: nuk_servers
+  become: true
+  gather_facts: true
+
+  vars:
+    compose_project_dir: /opt/nuk-system
+
+  pre_tasks:
+    - name: Verify Ubuntu version
+      ansible.builtin.command: cat /etc/os-release
+      register: os_release
+      changed_when: false
+
+    - name: Check Ubuntu version
+      ansible.builtin.assert:
+        that:
+          - "'26.04' in os_release.stdout"
+        fail_msg: "This playbook requires Ubuntu 26.04 LTS"
+        success_msg: "Ubuntu 26.04 detected"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  roles:
+    - docker-install
+    - nginx
+    - compose-stack
+
+  post_tasks:
+    - name: Display deployment summary
+      ansible.builtin.debug:
+        msg: |
+          === NUK System Deployment Complete ===
+          Services (HTTP):
+          - Grafana:       http://{{ ansible_host }}/
+          - Prometheus:    http://{{ ansible_host }}/prometheus
+          - Loki:          http://{{ ansible_host }}/loki
+          - Uptime Kuma:   http://{{ ansible_host }}/uptime-kuma
+          - Node Exporter: http://{{ ansible_host }}/node-exporter
+          Notes:
+          - Syslog: rsyslog on host :514 (Promtail reads /data0/syslog)
+          - SSL: disabled until DNS points to {{ ansible_host }}
+          ========================================

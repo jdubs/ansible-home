@@ -1,0 +1,35 @@
+# Prometheus configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Self-scrape
+  - job_name: prometheus
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  # Node Exporter on j100
+  - job_name: j100-node
+    static_configs:
+      - targets: ['j100:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.+):9100'
+        replacement: '${1}'
+
+  # Local Node Exporter
+  - job_name: local-node
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Grafana
+  - job_name: grafana
+    static_configs:
+      - targets: ['grafana:3000']
+
+  # Uptime Kuma
+  - job_name: uptime-kuma
+    static_configs:
+      - targets: ['uptime-kuma:3001']

@@ -1,0 +1,84 @@
+# Nuk System — Grafana stack variables
+
+# ── General ─────────────────────────────────────────────────
+data_dir: /data0
+
+# ── Docker ──────────────────────────────────────────────────
+docker_install_from_repo: true
+docker_compose_version: "2.32.3"
+
+# ── Grafana ─────────────────────────────────────────────────
+grafana_image: grafana/grafana:latest
+grafana_port: 3000
+grafana_admin_user: admin
+grafana_admin_password: "change_me"
+grafana_root_url: "https://grafana.home.xomar.com"
+grafana_install_plugins: grafana-clock-panel,grafana-simple-json-datasource
+
+# ── GitHub Auth (Grafana Org/Team Sync) ─────────────────────
+github_client_id: "Iv23lii1Bxeu4s4gztDu"
+github_client_secret: "fd0d5a7b378902b29c938b7dbb68b1598cec58f8"
+
+# ── Prometheus ──────────────────────────────────────────────
+prometheus_image: prom/prometheus:latest
+prometheus_port: 9090
+prom_retention: 30d
+
+# ── Loki ────────────────────────────────────────────────────
+loki_image: grafana/loki:latest
+loki_port: 3100
+loki_retention_days: 7
+
+# ── Fluent Bit ──────────────────────────────────────────────
+fluent_bit_image: fluent/fluent-bit:latest
+syslog_ports:
+  - "514:514"
+  - "514:514/udp"
+  - "1514:1514"
+  - "1514:1514/udp"
+
+# ── Uptime Kuma ─────────────────────────────────────────────
+uptime_kuma_image: louislam/uptime-kuma:latest
+uptime_kuma_port: 3001
+
+# ── Node Exporter ───────────────────────────────────────────
+node_exporter_image: prom/node-exporter:latest
+node_exporter_port: 9100
+
+# ── Nginx / SSL ─────────────────────────────────────────────
+nginx_domain: grafana.home.xomar.com
+nginx_email: admin@home.xomar.com
+nginx_data_dir: "{{ data_dir }}/nginx"
+nginx_ssl_dir: "/etc/letsencrypt"
+
+# ── Prometheus scrape targets ───────────────────────────────
+prometheus_scrape_targets:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["prometheus:9090"]
+
+  - job_name: node-exporter
+    static_configs:
+      - targets: ["node-exporter:9100"]
+
+  - job_name: j100-node
+    static_configs:
+      - targets: ["192.168.1.100:9100"]
+    labels:
+      instance: j100
+
+  - job_name: grafana
+    static_configs:
+      - targets: ["grafana:3000"]
+
+  - job_name: loki
+    static_configs:
+      - targets: ["loki:3100"]
+
+  - job_name: fluent-bit
+    static_configs:
+      - targets: ["fluent-bit:2020"]
+
+  - job_name: uptime-kuma
+    static_configs:
+      - targets: ["uptime-kuma:3001"]

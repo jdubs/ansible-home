@@ -1,0 +1,31 @@
+---
+# Nginx role defaults
+
+data_dir: /data0
+nginx_domain: grafana.home.xomar.com
+nginx_email: admin@home.xomar.com
+nginx_data_dir: "{{ data_dir }}/nginx"
+nginx_log_dir: "{{ data_dir }}/nginx/logs"
+nginx_config_dir: "{{ data_dir }}/nginx/config"
+
+nginx_service_urls:
+  grafana:
+    host: grafana
+    port: 3000
+    path: "/"
+  prometheus:
+    host: prometheus
+    port: 9090
+    path: "/"
+  loki:
+    host: loki
+    port: 3100
+    path: "/"
+  uptime-kuma:
+    host: uptime-kuma
+    port: 3001
+    path: "/"
+  node-exporter:
+    host: node-exporter
+    port: 9100
+    path: "/"

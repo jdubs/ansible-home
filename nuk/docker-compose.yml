@@ -1,0 +1,124 @@
+# Docker Compose — Nuk system Grafana stack
+# Ubuntu 26.04 LTS on Intel NUC
+
+services:
+  # ── Grafana ───────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    user: "472:472"
+    volumes:
+      - /data0/grafana/provisioning:/etc/grafana/provisioning:ro
+      - /data0/grafana/data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_A...n}
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    networks:
+      - stack
+    depends_on:
+      - loki
+      - prometheus
+
+  # ── Prometheus ────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - /data0/prometheus/data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=${PROM_RETENTION:-30d}"
+      - "--web.enable-lifecycle"
+    networks:
+      - stack
+
+  # ── Loki ──────────────────────────────────────────────────
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    volumes:
+      - /data0/loki/data:/loki
+      - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml:ro
+    ports:
+      - "3100:3100"
+    command:
+      - "--config.file=/etc/loki/loki-config.yaml"
+    networks:
+      - stack
+
+  # ── Promtail — ship logs to Loki ──────────────────────────
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - /data0/promtail/data:/tmp/promtail
+      - ./promtail/config.yaml:/etc/promtail/config.yaml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - "--config.file=/etc/promtail/config.yaml"
+    networks:
+      - stack
+
+  # ── Fluent Bit — receive syslog from network devices ─────
+  fluent-bit:
+    image: grafana/fluent-bit:latest
+    container_name: fluent-bit
+    restart: unless-stopped
+    volumes:
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+      - /data0/fluent-bit/data:/fluent-bit/data
+    ports:
+      - "514:514/tcp"
+      - "514:514/udp"
+      - "1514:1514/tcp"
+      - "1514:1514/udp"
+      - "24224:24224"
+    networks:
+      - stack
+
+  # ── Uptime Kuma — internet/service monitoring ─────────────
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - /data0/uptime-kuma/data:/app/data
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - stack
+
+  # ── Node Exporter — local system metrics ──────────────────
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    command:
+      - "--path.rootfs=/host"
+    volumes:
+      - /:/host:ro,rslave
+    ports:
+      - "9100:9100"
+    networks:
+      - stack
+    pid: host
+
+networks:
+  stack:
+    driver: bridge

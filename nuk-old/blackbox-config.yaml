@@ -1,0 +1,11 @@
+modules:
+  icmp_spectrum:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      source_ip_address: 192.168.1.209
+  icmp_att:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      source_ip_address: 192.168.15.209

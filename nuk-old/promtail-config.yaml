@@ -1,0 +1,48 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/agent-db/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: local
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: local_logs
+          host: nuk
+          __path__: /var/log/*log
+
+  - job_name: docker
+    static_configs:
+      - labels:
+          job: docker_logs
+          host: nuk
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    relabel_configs:
+      - source_labels: [__docker_container_name__]
+        target_label: container_name
+      - source_labels: [__docker_container_log_stream__]
+        target_label: stream
+
+  - job_name: syslog
+    static_configs:
+      - labels:
+          job: syslog
+          host: nuk
+          __path__: /data0/syslog/*/syslog.log
+      - labels:
+          job: syslog_auth
+          host: nuk
+          __path__: /data0/syslog/*/auth.log
+    relabel_configs:
+      - source_labels: [__path__]
+        regex: '.*/syslog/([^/]+)/.*'
+        target_label: hostname
