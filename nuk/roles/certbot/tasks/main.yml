@@ -1,0 +1,24 @@
+# Certbot role — provision Let's Encrypt certificates via Route53
+
+- name: Create certbot directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ nginx_ssl_dir }}"
+
+- name: Provision Let's Encrypt certificate via Route53
+  ansible.builtin.command: >
+    docker run --rm
+    -v {{ nginx_ssl_dir }}:{{ nginx_ssl_dir }}
+    -e AWS_ACCESS_KEY_ID={{ certbot_aws_access_key_id }}
+    -e AWS_SECRET_ACCESS_KEY={{ certbot_aws_secret_access_key }}
+    certbot/dns-route53:latest certonly
+    --dns-route53
+    --email {{ nginx_email }}
+    --agree-tos
+    --no-eff-email
+    -d {{ nginx_domain }}
+  become: true
+  changed_when: true

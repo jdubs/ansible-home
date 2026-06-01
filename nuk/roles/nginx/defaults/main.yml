@@ -7,6 +7,7 @@ nginx_email: admin@home.xomar.com
 nginx_data_dir: "{{ data_dir }}/nginx"
 nginx_log_dir: "{{ data_dir }}/nginx/logs"
 nginx_config_dir: "{{ data_dir }}/nginx/config"
+nginx_ssl_dir: "{{ data_dir }}/nginx/ssl"
 
 nginx_service_urls:
   grafana:

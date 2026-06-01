@@ -29,6 +29,7 @@
 
   roles:
     - docker-install
+    - certbot
     - nginx
     - compose-stack
 
