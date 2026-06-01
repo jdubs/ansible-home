@@ -15,6 +15,10 @@
     mode: '0755'
   loop:
     - grafana/data
+    - grafana/provisioning
+    - grafana/provisioning/datasources
+    - grafana/provisioning/dashboards
+    - grafana/provisioning/alerting
     - prometheus/data
     - loki/data
     - promtail/data
@@ -33,6 +37,16 @@
     src: docker-compose.yml.j2
     dest: "{{ compose_project_dir }}/docker-compose.yml"
     mode: '0644'
+
+- name: Deploy Grafana provisioning files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ data_dir }}/grafana/provisioning/{{ item.dest }}"
+    mode: '0644'
+  loop:
+    - { src: grafana/provisioning/datasources.yaml, dest: datasources.yaml }
+    - { src: grafana/provisioning/alerting.yaml, dest: alerting.yaml }
+    - { src: grafana/provisioning/dashboards.yaml, dest: dashboards.yaml }
 
 - name: Deploy Loki config
   ansible.builtin.copy:

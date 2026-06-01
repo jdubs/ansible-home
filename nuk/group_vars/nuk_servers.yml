@@ -26,11 +26,3 @@ prom_retention: 15d
 # ── GitHub OAuth for Grafana ──────────────────────────────────
 github_client_id: Ov23li7eQfxhRkAESNNz
 github_client_secret: <GH_SECRET>
-
-# ── Grafana Git Sync ──────────────────────────────────────────
-# Pulls provisioning files directly from GitHub
-grafana_git_sync_repo: "https://github.com/jdubs/ansible-home.git"
-grafana_git_sync_branch: main
-grafana_git_sync_interval: "60s"
-grafana_git_sync_token: <GITHUB_PAT>
-grafana_git_sync_repo_path: "nuk/grafana/provisioning"
