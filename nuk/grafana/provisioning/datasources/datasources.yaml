@@ -1,6 +1,4 @@
 # Nuk System - Grafana datasources provisioning
-# Official Grafana unified storage format
-
 apiVersion: 1
 
 kind: datasources
@@ -9,21 +7,25 @@ dataSources:
   - metadata:
       name: prometheus
     data:
-      type: prometheus
-      access: proxy
-      url: http://prometheus:9090
-      isDefault: true
-      editable: true
-      jsonData:
-        timeInterval: 15s
-        httpMethod: POST
+      datasource:
+        name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+        jsonData:
+          timeInterval: 15s
+          httpMethod: POST
   - metadata:
       name: loki
     data:
-      type: loki
-      access: proxy
-      url: http://loki:3100
-      isDefault: false
-      editable: true
-      jsonData:
-        maxLines: 1000
+      datasource:
+        name: Loki
+        type: loki
+        access: proxy
+        url: http://loki:3100
+        isDefault: false
+        editable: true
+        jsonData:
+          maxLines: 1000
