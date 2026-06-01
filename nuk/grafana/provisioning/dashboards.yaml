@@ -1,6 +1,6 @@
 # Nuk System - Grafana folder provisioning
 apiVersion: 1
-kind: folders
+kind: GrafanaConfig
 name: nuk-folders-config
 metadata:
   name: grafana-folders

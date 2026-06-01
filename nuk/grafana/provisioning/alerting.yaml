@@ -1,5 +1,5 @@
 apiVersion: 1
-kind: alerting
+kind: GrafanaConfig
 name: nuk-alerting-config
 metadata:
   name: grafana-alerts
