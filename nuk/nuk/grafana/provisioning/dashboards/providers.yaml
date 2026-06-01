@@ -1,0 +1,9 @@
+apiVersion: 1
+kind: dashboard
+metadata:
+  name: nuk-system
+data:
+  dashboard:
+    title: Nuk System
+    uid: nuk-system
+    schemaVersion: 39
