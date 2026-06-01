@@ -1,6 +1,8 @@
-# Nuk System - Grafana datasources provisioning
 apiVersion: 1
 kind: datasources
+name: nuk-datasources-config
+metadata:
+  name: grafana-datasources
 data:
   datasources:
     - metadata:
