@@ -1,5 +1,7 @@
-# Grafana dashboard provider config
+# Nuk System - Grafana dashboard providers config
 apiVersion: 1
+
+kind: dashboard
 
 providers:
   - name: 'default'
@@ -9,5 +11,5 @@ providers:
     disableDeletion: false
     editable: true
     options:
-      path: /etc/grafana/provisioning/dashboards
+      path: /var/lib/grafana/dashboards
       foldersFromFilesStructure: false
