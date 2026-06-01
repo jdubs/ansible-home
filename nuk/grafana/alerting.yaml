@@ -1,5 +1,5 @@
-apiVersion: folder.grafana.app/v1  # <- Crucial API group found in your logs
-kind: folders
+apiVersion: 1
+kind: alerting          # <-- Internal Grafana plugin expects 'alerting'
 name: nuk-alerting-config
 metadata:
   name: grafana-alerts

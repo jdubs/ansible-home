@@ -1,10 +1,10 @@
-apiVersion: folder.grafana.app/v1  # <- Crucial API group found in your logs
-kind: folders
+apiVersion: 1
+kind: datasources       # <-- Internal Grafana plugin expects plural 'datasources'
 name: nuk-datasources-config
 metadata:
   name: grafana-datasources
 data:
-  datasources:
+  datasources:          # <-- This must match the kind type
     - name: Prometheus
       type: prometheus
       access: proxy
