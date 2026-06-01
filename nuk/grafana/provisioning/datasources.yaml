@@ -1,9 +1,5 @@
 apiVersion: 1
-kind: GrafanaDatasource
-metadata:
-  name: prometheus-datasource
-data:
-  datasources:
+datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
