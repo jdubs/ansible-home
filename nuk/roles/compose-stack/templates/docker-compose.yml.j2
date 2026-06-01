@@ -9,11 +9,17 @@ services:
     volumes:
       - {{ data_dir }}/grafana/data:/var/lib/grafana
       - {{ data_dir }}/grafana/data/grafana.ini:/etc/grafana/grafana.ini:ro
-      - {{ data_dir }}/grafana/data/grafana-provisioning:/etc/grafana/provisioning:ro
     environment:
       - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
       - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
       - GF_INSTALL_PLUGINS={{ grafana_install_plugins }}
+      # Git Sync — pull provisioning files from GitHub
+      - GF_PROVISIONING_GIT_SYNC_ENABLED=true
+      - GF_PROVISIONING_GIT_SYNC_REPO={{ grafana_git_sync_repo }}
+      - GF_PROVISIONING_GIT_SYNC_BRANCH={{ grafana_git_sync_branch }}
+      - GF_PROVISIONING_GIT_SYNC_INTERVAL={{ grafana_git_sync_interval }}
+      - GF_PROVISIONING_GIT_SYNC_TOKEN={{ grafana_git_sync_token }}
+      - GF_PROVISIONING_GIT_SYNC_REPO_PATH={{ grafana_git_sync_repo_path }}
     networks:
       - stack
 

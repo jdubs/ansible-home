@@ -1,11 +1,12 @@
-# Nuk System - Grafana folder provisioning
 apiVersion: 1
 
-kind: folders
-data:
-  folders:
-    - title: Nuk System
-      uid: nuk-system
-      orgId: 1
-      parentUid: ''
-      readOnly: false
+providers:
+  - name: 'Nuk System'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

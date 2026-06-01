@@ -1,5 +1,8 @@
-# Nuk System - Grafana alert rules provisioning
 apiVersion: 1
 
-kind: alerting
-data: {}
+groups:
+  - orgId: 1
+    name: 'Default'
+    folder: ''
+    interval: 1m
+    rules: []
