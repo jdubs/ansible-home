@@ -13,7 +13,7 @@ grafana_port: 3000
 grafana_admin_user: admin
 grafana_admin_password: "change_me"
 grafana_root_url: "https://grafana.home.xomar.com"
-grafana_install_plugins: grafana-clock-panel,grafana-simple-json-datasource
+grafana_install_plugins: grafana-clock-panel
 
 # ── GitHub Auth (Grafana Org/Team Sync) ─────────────────────
 github_client_id: "Iv23lii1Bxeu4s4gztDu"

@@ -8,21 +8,12 @@ services:
     restart: unless-stopped
     volumes:
       - {{ data_dir }}/grafana/data:/var/lib/grafana
-      - {{ data_dir }}/grafana/provisioning:/etc/grafana/provisioning:ro
+      - {{ data_dir }}/grafana/data/grafana.ini:/etc/grafana/grafana.ini:ro
+      - {{ data_dir }}/grafana/data/grafana-provisioning:/etc/grafana/provisioning:ro
     environment:
       - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
       - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
-      - GF_SERVER_ROOT_URL={{ grafana_root_url }}
       - GF_INSTALL_PLUGINS={{ grafana_install_plugins }}
-      - GF_AUTH_GITHUB_ENABLED=true
-      - GF_AUTH_GITHUB_CLIENT_ID={{ github_client_id }}
-      - GF_AUTH_GITHUB_CLIENT_SECRET={{ github_client_secret }}
-      - GF_AUTH_GITHUB_ALLOW_SIGN_UP=true
-      - GF_AUTH_GITHUB_SCOPES=user:email,read:org
-      - GF_AUTH_GITHUB_AUTH_URL=https://github.com/login/oauth/authorize
-      - GF_AUTH_GITHUB_TOKEN_URL=https://github.com/login/oauth/access_token
-      - GF_AUTH_GITHUB_API_URL=https://api.github.com/user
-      - GF_AUTH_GITHUB_ORG_MAPPING=true
     networks:
       - stack
 

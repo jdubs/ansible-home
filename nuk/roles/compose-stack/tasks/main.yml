@@ -15,12 +15,21 @@
     mode: '0755'
   loop:
     - grafana/data
-    - grafana/provisioning
+    - grafana/data/grafana-provisioning/datasources
+    - grafana/data/grafana-provisioning/dashboards
+    - grafana/data/grafana-provisioning/alerting
+    - grafana/data/grafana-provisioning/plugins
     - prometheus/data
     - loki/data
     - promtail/data
     - fluent-bit/data
     - uptime-kuma/data
+
+- name: Deploy Grafana configuration
+  ansible.builtin.template:
+    src: grafana.ini.j2
+    dest: "{{ data_dir }}/grafana/data/grafana.ini"
+    mode: '0644'
 
 - name: Deploy docker-compose.yml
   ansible.builtin.template:
@@ -28,20 +37,14 @@
     dest: "{{ compose_project_dir }}/docker-compose.yml"
     mode: '0644'
 
-- name: Deploy .env file
-  ansible.builtin.template:
-    src: .env.j2
-    dest: "{{ compose_project_dir }}/.env"
-    mode: '0600'
-
 - name: Deploy Grafana provisioning files
   ansible.builtin.copy:
     src: "{{ item.src }}"
-    dest: "{{ data_dir }}/grafana/provisioning/{{ item.dest | default(item.src | basename) }}"
+    dest: "{{ data_dir }}/grafana/data/grafana-provisioning/{{ item.dest | default(item.src | basename) }}"
     mode: '0644'
   loop:
-    - { src: grafana/provisioning/datasources/datasources.yaml }
-    - { src: grafana/provisioning/providers.yaml }
+    - { src: grafana/provisioning/datasources/datasources.yaml, dest: datasources/datasources.yaml }
+    - { src: grafana/provisioning/providers.yaml, dest: providers.yaml }
 
 - name: Deploy Loki config
   ansible.builtin.copy:
