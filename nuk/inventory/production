@@ -1,4 +1,4 @@
-# NUK System — Grafana stack deployment
+# NUK System — deployment
 # Intel NUC at 192.168.1.200
 
 [nuk_servers]
@@ -6,4 +6,3 @@ nuk-nuc ansible_host=192.168.1.209 ansible_user=jw ansible_python_interpreter=/u
 
 [nuk_servers:vars]
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
-nginx_domain=grafana.home.xomar.com
